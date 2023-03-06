@@ -1,0 +1,33 @@
+name: 'Build dist'
+on:
+  schedule:
+    - cron: '*/2 * * * *' #'0 */6 * * *' # every 6 hours
+
+jobs:
+  build-dist:
+    runs-on: ubuntu-latest
+    steps:
+      - id: genshin-db
+        uses: pozetroninc/github-action-get-latest-release@master
+        with:
+          repository: theBowja/genshin-db
+          excludes: prerelease, draft
+
+      - name: Read genshin-db.version file
+        id: genshin-db-dist
+        run: echo "version=$(cat genshin-db.version)" >> $GITHUB_OUTPUT
+
+      - run: echo "genshin-db latest release is on version ${{ steps.genshin-db.outputs.release }}"
+      - run: echo "genshin-db-dist is on version ${{ steps.genshin-db-dist.outputs.version }}"
+
+      - uses: actions/checkout@v3
+
+
+      - name: Check if there is a new version available
+        if: ${{ steps.genshin-db.outputs.release != steps.genshin-db-dist.outputs.version }}
+        run: echo "New genshin-db version available!"
+
+
+      # {{ steps.genshin-db}}
+# if: ${{ steps.genshin-db.outputs.release != steps.genshin-db-dist.outputs.version }}
+
