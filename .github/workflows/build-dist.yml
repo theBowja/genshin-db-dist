@@ -12,6 +12,7 @@ jobs:
         with:
           repository: theBowja/genshin-db
           excludes: prerelease, draft
+          secret: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Read genshin-db.version file
         id: genshin-db-dist
