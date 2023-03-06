@@ -1,0 +1,18 @@
+name: Send genshin-db_release repository dispatch
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  genshin-db_release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.PUBLIC_REPO_PAT }}
+          repository: theBowja/genshin-db-dist
+          event-type: genshin-db_release
+          client-payload: '{"test": "${{vars.GITHUB_REF}}"}'
