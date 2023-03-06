@@ -20,3 +20,8 @@ jobs:
       #- run: echo "github ${{github.GITHUB_REF}}"
       - run: echo "env ${{env.GITHUB_REF}}"
       - run: echo "ref ${{vars.GITHUB_REF}}"
+      - run: echo $GITHUB_REF
+      - run: echo ${GITHUB_REF#refs/tags/}
+      - run: echo "$GITHUB_REF_NAME"
+     # - run: echo "Tag name from github.ref_name:"
+    #  - run: echo "Tag name from github.ref_name: ${{  github.ref_name }}"
