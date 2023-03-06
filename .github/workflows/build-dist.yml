@@ -1,7 +1,7 @@
 name: 'Build dist'
 on:
-  schedule:
-    - cron: '*/2 * * * *' #'0 */6 * * *' # every 6 hours
+  repository_dispatch:
+    types: [genshin-db_release]
 
 jobs:
   build-dist:
