@@ -15,7 +15,7 @@ jobs:
           token: ${{ secrets.PUBLIC_REPO_PAT }}
           repository: theBowja/genshin-db-dist
           event-type: genshin-db_release
-          client-payload: '{"test": "${{env.GITHUB_REF}}"}'
+          client-payload: '{"test": "$GITHUB_REF_NAME"}'
 
       #- run: echo "github ${{github.GITHUB_REF}}"
       - run: echo "env ${{env.GITHUB_REF}}"
