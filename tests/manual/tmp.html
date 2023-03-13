@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<!-- <script type='text/javascript' src='https://cdn.jsdelivr.net/gh/theBowja/genshin-db-dist@genshin-db-none.js'></script> -->
+<!-- <script type='text/javascript' src='https://raw.githubusercontent.com/theBowja/genshin-db-dist/genshin-db-none.js'></script> -->
+
+<script type='text/javascript' src='../../genshindb-nodata.js'></script>
+<!-- <script type='text/javascript' src='../../data/scripts/all-achievements.js'></script> -->
+<script type='text/javascript' src='../../data/scripts/english-characters.js'></script>
+
+<body>
+
+	<h1>My First Heading</h1>
+	<p id="result">Result</p>
+
+</body>
+</html>
+
+<script>
+	let tmp;
+	// tmp = GenshinDb.achievements('wonder', { matchCategories: true, verboseCategories: true });
+	tmp = GenshinDb.achievements('names', { matchCategories: true });
+	// tmp = GenshinDb.characters('names', { matchCategories: true });
+	console.log(GenshinDb.characters('names', { matchCategories: true }));
+	tmp = GenshinDb.characters('hu tao', { matchCategories: true, resultLanguage: 'jp' });
+	console.log(tmp);
+
+
+	document.getElementById('result').innerHTML = JSON.stringify(tmp, null, '\t');
+</script>
+
+
+<!-- <script type='text/javascript' src='https://cdn.jsdelivr.net/gh/theBowja/genshin-db@main/dist/genshindb-none.js'></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+console.log(GenshinDb.characters('hu tao')); 
+$.getScript('https://cdn.jsdelivr.net/gh/theBowja/genshin-db@main/dist/data/scripts/english-characters.js', () => {
+	console.log(GenshinDb.characters('hu tao')); // logs the data object for Hu Tao
+})
+</script> -->
+
+

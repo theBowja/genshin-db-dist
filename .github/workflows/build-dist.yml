@@ -6,29 +6,60 @@ on:
 jobs:
   build-dist:
     runs-on: ubuntu-latest
+
     steps:
-      - id: genshin-db
-        uses: pozetroninc/github-action-get-latest-release@master
+      - uses: actions/checkout@v3
+        uses: actions/setup-node@v3
         with:
-          repository: theBowja/genshin-db
-          excludes: prerelease, draft
-          token: ${{ secrets.GITHUB_TOKEN }}
+          node-version: 16
 
       - name: Read genshin-db.version file
         id: genshin-db-dist
         run: echo "version=$(cat genshin-db.version)" >> $GITHUB_OUTPUT
 
-      - run: echo "genshin-db latest release is on version ${{ steps.genshin-db.outputs.release }}"
+      - run: echo "genshin-db latest release is on version ${{ github.event.client_payload.tagname }}"
       - run: echo "genshin-db-dist is on version ${{ steps.genshin-db-dist.outputs.version }}"
 
-      - uses: actions/checkout@v3
-
-
       - name: Check if there is a new version available
-        if: ${{ steps.genshin-db.outputs.release != steps.genshin-db-dist.outputs.version }}
+        if: ${{ github.event.client_payload.tagname != steps.genshin-db-dist.outputs.version }}
         run: echo "New genshin-db version available!"
+        
 
+      - name: Check out genshin-db
+        if: ${{ github.event.client_payload.tagname != steps.genshin-db-dist.outputs.version }}
+        uses: actions/checkout@v3
+        with:
+          repository: theBowja/genshin-db
+          token: ${{ secrets.PUBLIC_REPO_PAT }}
+          path: genshin-db-clone
 
-      # {{ steps.genshin-db}}
-# if: ${{ steps.genshin-db.outputs.release != steps.genshin-db-dist.outputs.version }}
+      - name: Install packages
+        if: ${{ github.event.client_payload.tagname != steps.genshin-db-dist.outputs.version }}
+        run: |
+          cd genshin-db-clone
+          npm ci
 
+      - name: Run buildAllDist script
+        if: ${{ github.event.client_payload.tagname != steps.genshin-db-dist.outputs.version }}
+        run: |
+          cd genshin-db-clone
+          npm run buildAllDist -- --outdir ../
+
+      - name: Run combineData script
+        if: ${{ github.event.client_payload.tagname != steps.genshin-db-dist.outputs.version }}
+        run: |
+          cd genshin-db-clone
+          npm run combineData -- --outdir ../data/standard
+
+      - name: Update version
+        if: ${{ github.event.client_payload.tagname != steps.genshin-db-dist.outputs.version }}
+        run: echo "${{ github.event.client_payload.tagname }}" >> genshin-db.version
+
+      - name: Commit
+        if: ${{ github.event.client_payload.tagname != steps.genshin-db-dist.outputs.version }}
+        run: |
+          git config --global user.name 'theBowja'
+          git config --global user.email 'theBowja@users.noreply.github.com'
+          git add --all
+          git commit -am "Automated build for ${{ github.event.client_payload.tagname }}"
+          git push

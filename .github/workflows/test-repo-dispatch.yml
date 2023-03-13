@@ -6,6 +6,9 @@ on:
 
 jobs:
   genshin-db_release:
+    strategy:
+      matrix:
+        repo: ['theBowja/genshin-db-dist']
     runs-on: ubuntu-latest
 
     steps:
@@ -13,6 +16,6 @@ jobs:
         uses: peter-evans/repository-dispatch@v2
         with:
           token: ${{ secrets.PUBLIC_REPO_PAT }}
-          repository: theBowja/genshin-db-dist
+          repository: ${{ matrix.repo }}
           event-type: genshin-db_release
           client-payload: '{"tagname": "${{ github.ref_name}}"}'
