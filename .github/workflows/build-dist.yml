@@ -53,7 +53,7 @@ jobs:
 
       - name: Update version
         if: ${{ github.event.client_payload.tagname != steps.genshin-db-dist.outputs.version }}
-        run: echo "${{ github.event.client_payload.tagname }}" >> genshin-db.version
+        run: echo "${{ github.event.client_payload.tagname }}" > genshin-db.version
 
       - name: Commit
         if: ${{ github.event.client_payload.tagname != steps.genshin-db-dist.outputs.version }}
