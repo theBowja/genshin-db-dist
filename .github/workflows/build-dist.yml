@@ -9,7 +9,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-        uses: actions/setup-node@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: 16
 
@@ -23,7 +23,7 @@ jobs:
       - name: Check if there is a new version available
         if: ${{ github.event.client_payload.tagname != steps.genshin-db-dist.outputs.version }}
         run: echo "New genshin-db version available!"
-        
+
 
       - name: Check out genshin-db
         if: ${{ github.event.client_payload.tagname != steps.genshin-db-dist.outputs.version }}
