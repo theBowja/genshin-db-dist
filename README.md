@@ -6,20 +6,25 @@ This folder contains various gzips/scripts which can be used from node, web, or 
 
 You can choose which data to include to reduce the size of your project.
 
-The main scripts `genshindb-none.js` and `genshindb-standard.js` contain the `genshin-db` searching api. The scripts in the `data/scripts` contain only binary data which is extracted by the main script or can be extracted manually.
+The main script `genshindb-nodata.js` contain the `genshin-db` searching api but without any data. The library API can be directly accessed from the windows object like: `window.GenshinDb` or `GenshinDb`. You can also try `const genshindb = require('GenshinDb')`.
+- The scripts in the `data/scripts` contain only binary data which can be automatically extracted by the main script.
+- The data in `data/gzips` can be extracted and loaded into genshin-db manually.
 
-The format of the name for the data scripts are: language name, a dash, and then folder name. All lowercase. For example: english-characters.
+The format of the name for the data scripts are: language name, a dash, and then folder name. ${language}-${folder}. All lowercase. For example: `data/scripts/english-characters.js`.
+- The list of [languages](https://github.com/theBowja/genshin-db/blob/main/src/language.js) and [folders](https://github.com/theBowja/genshin-db/blob/main/src/folder.js) can be found in the [genshin-db](https://github.com/theBowja/genshin-db) repo or directly accessed as enums from the library using `GenshinDb.Language` and `GenshinDb.Folder`.
+
+You may use the `genshin-db.version` file to help version the data you import.
 
 ## Web
 
-You may wish to use `genshin-db` with your React or Angular or whatever web project. The important thing is to reduce the size of script to keep browser loading times fast.
+You may wish to use `genshin-db` with your web project (React, Angular, etc). It is imperative to reduce the size of script to keep browser loading times fast. The following methods list the ways you can achieve this.
 
 ### loading data during page-load
 
-The script `genshindb-none.js` contains the searching api but with no data in it to keep it small. You can add it to your hmtl to use it:
+The script `genshindb-nodata.js` contains the searching api but with no data in it to keep it small. You can add it to your HTML directly:
 
 ```html
-<script type='text/javascript' src='https://cdn.jsdelivr.net/gh/theBowja/genshin-db@main/dist/genshindb-none.js'></script>
+<script type='text/javascript' src='https://cdn.jsdelivr.net/gh/theBowja/genshin-db-dist@main/genshindb-nodata.js'></script>
 <script>
 console.log(GenshinDb.characters('hu tao')); // logs undefined
 </script>
