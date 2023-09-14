@@ -33,10 +33,10 @@ console.log(GenshinDb.characters('hu tao')); // logs undefined
 Then you can pick and [choose which data scripts](https://github.com/theBowja/genshin-db/tree/main/dist/data/scripts) to include. These data scripts will automatically add their data to the main script if it is in the browser.
 
 ```html
-<script type='text/javascript' src='https://cdn.jsdelivr.net/gh/theBowja/genshin-db@main/dist/genshindb-none.js'></script>
+<script type='text/javascript' src='https://cdn.jsdelivr.net/gh/theBowja/genshin-db-dist@main/genshindb-nodata.js'></script>
 
-<script type='text/javascript' src='https://cdn.jsdelivr.net/gh/theBowja/genshin-db@main/dist/data/scripts/english-characters.js'></script>
-<script type='text/javascript' src='https://cdn.jsdelivr.net/gh/theBowja/genshin-db@main/dist/data/scripts/english-talents.js'></script>
+<script type='text/javascript' src='https://cdn.jsdelivr.net/gh/theBowja/genshin-db-dist@main/data/scripts/english-characters.js'></script>
+<script type='text/javascript' src='https://cdn.jsdelivr.net/gh/theBowja/genshin-db-dist@main/data/scripts/english-talents.js'></script>
 <script>
 console.log(GenshinDb.characters('hu tao')); // logs the data object for Hu Tao
 console.log(GenshinDb.talents('hu tao')); // logs the data object for Hu Tao
@@ -50,11 +50,11 @@ This is probably the simplest solution.
 You can load data on the fly as well with [jQuery's getScript](https://api.jquery.com/jquery.getscript/). If you don't have jQuery, then you can use the [standalone getScript](https://gist.github.com/colingourlay/7209131).
 
 ```html
-<script type='text/javascript' src='https://cdn.jsdelivr.net/gh/theBowja/genshin-db@main/dist/genshindb-none.js'></script>
+<script type='text/javascript' src='https://cdn.jsdelivr.net/gh/theBowja/genshin-db-dist@main/genshindb-nodata.js'></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 console.log(GenshinDb.characters('hu tao')); // logs undefined
-$.getScript('https://cdn.jsdelivr.net/gh/theBowja/genshin-db@main/dist/data/scripts/english-characters.js', () => {
+$.getScript('https://cdn.jsdelivr.net/gh/theBowja/genshin-db-dist@main/data/scripts/english-characters.js', () => {
 	console.log(GenshinDb.characters('hu tao')); // logs the data object for Hu Tao
 })
 </script>
@@ -83,7 +83,7 @@ Then, download the data gzips/scripts you'll use into a folder in your project.
 Then, you can use genshin-db in your project like so:
 
 ```js
-const genshindb = require('./genshindb-none.js');
+const genshindb = require('./genshindb-nodata.js');
 require('./datascripts/english-characters.js')(genshindb); // pass in genshindb to auto add the data to genshin-db
 
 console.log(genshindb.characters('hu tao')); // logs the data object for Hu Tao
@@ -98,7 +98,7 @@ It's possible to use HTTP to dynamically load in data for genshin-db.
 ```js
 const genshindb = require('./dist/genshindb-none.js');
 
-https.get('https://gitcdn.link/cdn/theBowja/genshin-db/main/dist/data/gzips/english-characters.min.json.gzip', (res) => {
+https.get('https://gitcdn.link/cdn/theBowja/genshin-db-dist/main/data/gzips/english-characters.min.json.gzip', (res) => {
 	let bodyChunks = []; // array of Buffer
 	res.on('data', (chunk) => { bodyChunks.push(chunk); });
 	res.on('end', () => {
