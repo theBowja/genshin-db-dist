@@ -63,3 +63,23 @@ jobs:
           git add --all
           git commit -am "Automated build for ${{ github.event.client_payload.tagname }}"
           git push
+
+      - name: Get latest commit hash
+        if: ${{ github.event.client_payload.tagname != steps.genshin-db-dist.outputs.version }}
+        run: |
+          echo "latestcommit=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Tag
+        if: ${{ github.event.client_payload.tagname != steps.genshin-db-dist.outputs.version }}
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.git.createTag({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag: '${{ github.event.client_payload.tagname }}',
+              message: 'Release for genshin-db ${{ github.event.client_payload.tagname }}',
+              object: '${{ steps.genshin-db-dist.outputs.latestcommit }}',
+              type: 'commit'
+            })
+        
