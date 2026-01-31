@@ -1,5 +1,6 @@
 name: 'Build dist'
 on:
+  workflow_dispatch:
   repository_dispatch:
     types: [genshin-db_release]
 
